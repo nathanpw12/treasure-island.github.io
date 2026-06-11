@@ -9,32 +9,35 @@
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 
     <style>
-        body {
+        body, html {
             background-color: #000000;
             color: #00ff00;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
-            height: 100vh;
             width: 100vw;
-            overflow: hidden;
+            height: 100vh;
+            overflow: hidden; 
         }
 
-        .mpy-terminal {
+       
+        mpy-terminal, py-terminal, [terminal] {
             width: 100vw !important;
             height: 100vh !important;
             max-width: none !important;
+            max-height: none !important;
             border: none !important;
             border-radius: 0 !important;
             padding: 20px !important;
             box-sizing: border-box !important;
             font-size: 16px !important;
+            background-color: #000000 !important;
         }
     </style>
 </head>
 <body>
 
-    <script type="mpy" terminal worker>
+    <script type="mpy" terminal>
 print(r'''
 *******************************************************************************
           ___________                                                  
