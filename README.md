@@ -1,4 +1,4 @@
-> 🇧🇷 **[Clique aqui para ler a versão em Português](#-ilha-do-tesouro--versão-em-português)**
+> 🇧🇷 **[Clique aqui para ler a versão em Português](#-Ilha-do-Tesouro)**
 > 
 # 🏴‍☠️ Treasure Island
 
