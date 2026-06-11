@@ -1,4 +1,4 @@
-# ADICIONAR LINK DEPOIS DO REPOSITORIO ORIGINAL
+# ORIGINAL REPOSITORIE: https://github.com/nathanpw12/100-Days-of-Code-The-Complete-Python-Pro-Bootcamp/blob/master/Day%203/Treasure%20Island%20Project/task.py
 
 print(r'''
 *******************************************************************************
