@@ -5,17 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Treasure Island</title>
     <style>
-        body, html {
+        html {
             background-color: #000000;
+            scroll-behavior: smooth; /* A animação suave de rolagem fica aqui agora */
+        }
+
+        body {
             color: #ffffff;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
-            height: 100vh;
-            /* Permite rolagem no body para o scrollTo funcionar */
-            overflow-y: auto;
-            scroll-behavior: smooth; /* Adiciona uma animação suave de rolagem */
+            /* A MÁGICA DO SCROLL ESTÁ AQUI: min-height em vez de height */
+            min-height: 100vh; 
         }
 
         #terminal {
@@ -23,16 +25,14 @@
             font-size: 16px;
             line-height: 1.2;
             white-space: pre-wrap;
-            /* Garante que o terminal não corte o conteúdo */
-            padding-bottom: 50px; 
+            padding-bottom: 20px; 
         }
 
         .input-container {
             display: flex;
             align-items: center;
             margin-top: 10px;
-            /* Garante que a caixa de input não fique grudada no final */
-            padding-bottom: 20px;
+            padding-bottom: 50px; /* Respiro no fundo da tela */
         }
 
         .prompt-symbol {
@@ -109,7 +109,7 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
 ******************************************
 ⠀⠀
          ❤ 𝚃𝙷𝙰𝙽𝙺𝚂 𝙵𝙾𝚁 𝙿𝙻𝙰𝚈𝙸𝙽𝙶! ❤ 
-          〘 𝗴𝗶𝚝𝗵𝘂𝗯 @𝗻𝗮𝚝𝚑𝗮𝗻𝚙𝚠𝟷𝟸 〙
+          〘 𝗴𝗶𝘁𝗵𝘂𝗯 @𝗻𝗮𝘁𝗵𝗮𝗻𝗽𝘄𝟭𝟮 〙
 </pre>
     </div>
 
@@ -126,18 +126,19 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
         
         let gameState = 1;
 
-        // --- A MÁGICA ESTÁ AQUI ---
         function printLine(text) {
             terminal.innerHTML += text + "\n";
-            
-            // Pequeno atraso (50ms) para garantir que o navegador renderizou
-            // todo o texto novo antes de calcular a nova altura da página.
             setTimeout(function() {
-                // Rola a janela (window) até o final do corpo (document.body)
                 window.scrollTo(0, document.body.scrollHeight);
             }, 50);
         }
-        // -------------------------
+
+        // --- NOVA FUNÇÃO PARA FIM DE JOGO / INPUT INVÁLIDO ---
+        function gameOver(message) {
+            printLine(message);
+            printLine("\n       [ ↻ Refresh the page to play again ↻ ]\n");
+            inputBox.style.display = 'none'; // Esconde a caixa de texto
+        }
 
         printLine(document.getElementById('art-ship').textContent);
         printLine("     ♛ Welcome to Treasure Island ♛\n");
@@ -160,10 +161,9 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
                     printLine("【 You've found a river, do you want to 】\n            ▶ Wait or Swim? ◀");
                     gameState = 2;
                 } else if (answer === 'left') {
-                    printLine("\n        ☠︎︎ You fell into a hole ☠︎︎\n             ✖ Game Over ✖ \n");
-                    endGame();
+                    gameOver("\n        ☠︎︎ You fell into a hole ☠︎︎\n             ✖ Game Over ✖ ");
                 } else {
-                    printLine("⚠ Invalid input, please try again ⚠︎");
+                    gameOver("\n        ⚠ Invalid input ⚠︎\n             ✖ Game Over ✖ ");
                 }
             } 
             else if (gameState === 2) {
@@ -172,30 +172,24 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
                     printLine("【 You approach and see 3 doors, which door do you want to open 】\n            ▶ Red, Blue or Yellow? ◀");
                     gameState = 3;
                 } else if (answer === 'swim') {
-                    printLine("\n        ☠︎︎ You were attacked by trout ☠︎︎\n              ✖ Game Over ✖ \n");
-                    endGame();
+                    gameOver("\n        ☠︎︎ You were attacked by trout ☠︎︎\n              ✖ Game Over ✖ ");
                 } else {
-                    printLine("⚠ Invalid input, please try again ⚠︎");
+                    gameOver("\n        ⚠ Invalid input ⚠︎\n             ✖ Game Over ✖ ");
                 }
             }
             else if (gameState === 3) {
                 if (answer === 'red') {
-                    printLine("\n        ☠︎︎ You were burned by fire ☠︎︎\n               ✖ Game Over ✖ \n");
-                    endGame();
+                    gameOver("\n        ☠︎︎ You were burned by fire ☠︎︎\n               ✖ Game Over ✖ ");
                 } else if (answer === 'blue') {
-                    printLine("\n        ☠︎︎ You were devoured by beasts ☠︎\n               ✖ Game Over ✖ \n");
-                    endGame();
+                    gameOver("\n        ☠︎︎ You were devoured by beasts ☠︎\n               ✖ Game Over ✖ ");
                 } else if (answer === 'yellow') {
                     printLine(document.getElementById('art-treasure').textContent);
-                    endGame();
+                    printLine("\n       [ ↻ Refresh the page to play again ↻ ]\n");
+                    inputBox.style.display = 'none';
                 } else {
-                    printLine("⚠ Invalid input, please try again ⚠︎");
+                    gameOver("\n        ⚠ Invalid input ⚠︎\n             ✖ Game Over ✖ ");
                 }
             }
-        }
-
-        function endGame() {
-            inputBox.style.display = 'none';
         }
     </script>
 </body>
