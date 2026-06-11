@@ -5,41 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Treasure Island</title>
     
-    
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 
-    
     <style>
         body {
-            background-color: #0a0a0a;
-            color: #00ff00; 
+            background-color: #000000;
+            color: #00ff00;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 0;
             height: 100vh;
+            width: 100vw;
+            overflow: hidden;
         }
 
-        
         .mpy-terminal {
-            background-color: #000000 !important;
-            border: 2px solid #333 !important;
-            border-radius: 8px !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            border: none !important;
+            border-radius: 0 !important;
             padding: 20px !important;
-            width: 100%;
-            max-width: 900px;
-            height: 85vh;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-            font-size: 14px;
+            box-sizing: border-box !important;
+            font-size: 16px !important;
         }
     </style>
 </head>
 <body>
 
-    
-    <script type="py" terminal>
+    <script type="py" terminal worker>
 print(r'''
 *******************************************************************************
           ___________                                                  
@@ -73,19 +68,20 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
 print("     ♛ Welcome to Treasure Island ♛\n")
 print(" ◆ Your mission is to find the treasure ◆\n")
 
-position1 = input('''【 You're on the road, do you want to go 】 \n            ▶ Left or Right? ◀ \n↳ ''').lower().replace(" ", "")
+position1 = input('''【 You're on the road, do you want to go 】 \n            ▶ Left or Right? ◀ \n↳ ''').lower().replace(
+    " ", "")
 
-# Left or Right
 if position1 == 'right':
 
-    position2 = input('''【 You've found a river, do you want to 】 \n            ▶ Wait or Swim? ◀ \n↳ ''').lower().replace(" ", "")
+    position2 = input(
+        '''【 You've found a river, do you want to 】 \n            ▶ Wait or Swim? ◀ \n↳ ''').lower().replace(" ", "")
 
-    # Nível 2: Wait or Swim (Só acontece se escolher Right)
     if position2 == 'wait':
         print('\n🚪 While waiting, you notice colorful doors in the distance 🚪\n')
-        position3 = input('【 You approach and see 3 doors, which door do you want to open 】 \n            ▶ Red, Blue or Yellow? ◀ \n↳ ').lower().replace(" ", "")
+        position3 = input(
+            '【 You approach and see 3 doors, which door do you want to open 】 \n            ▶ Red, Blue or Yellow? ◀ \n↳ ').lower().replace(
+            " ", "")
 
-        # Nível 3: As Portas (Só acontece se escolher Wait)
         if position3 == 'red':
             print('''\n        ☠︎︎ You were burned by fire ☠︎︎\n               ✖ Game Over ✖ ''')
         elif position3 == 'blue':
