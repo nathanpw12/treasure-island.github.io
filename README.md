@@ -1,5 +1,5 @@
-> 🇧🇷 **[Clique aqui para ler a versão em Português](#-Ilha-do-Tesouro)**
-> 
+> 🇧🇷 **[Clique aqui para ler a versão em Português](#pt-br)**
+
 # 🏴‍☠️ Treasure Island
 
 > 🎓 **Course Project:** This game was built as the final challenge for **Day 3** of the *"100 Days of Code™: The Complete Python Pro Bootcamp"* created by Angela Yu.
@@ -29,12 +29,12 @@ You don't need to install Python to play the preview! We built a web-based termi
 To experience the game exactly as it was programmed, run the Python file directly on your machine:
 
 1. Clone this repository:
-   ```bash
+```bash
    git clone [https://github.com/nathanpw12/treasure-island.git](https://github.com/nathanpw12/treasure-island.git)
    ```
 
 2. Navigate to the folder and run the original script:
-   ```bash
+```bash
    python main.py
    ```
 
@@ -44,6 +44,8 @@ To experience the game exactly as it was programmed, run the Python file directl
 
 ---
 ---
+
+<div id="pt-br"></div>
 
 # 🏴‍☠️ Ilha do Tesouro
 
@@ -74,12 +76,12 @@ Você não precisa instalar o Python para testar a prévia! Nós construímos um
 Para experimentar o jogo exatamente como ele foi programado, rode o arquivo Python direto na sua máquina:
 
 1. Clone este repositório:
-   ```bash
+```bash
    git clone [https://github.com/nathanpw12/treasure-island.git](https://github.com/nathanpw12/treasure-island.git)
    ```
 
 2. Entre na pasta e execute o script original:
-   ```bash
+```bash
    python main.py
    ```
 
