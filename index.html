@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Treasure Island</title>
     
+    <script src="https://cdn.jsdelivr.net/gh/gzuidhof/coi-serviceworker@master/coi-serviceworker.min.js"></script>
+
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 
@@ -17,10 +19,9 @@
             padding: 0;
             width: 100vw;
             height: 100vh;
-            overflow: hidden; 
+            overflow: hidden;
         }
 
-       
         mpy-terminal, py-terminal, [terminal] {
             width: 100vw !important;
             height: 100vh !important;
@@ -37,7 +38,7 @@
 </head>
 <body>
 
-    <script type="mpy" terminal>
+    <script type="py" terminal worker>
 print(r'''
 *******************************************************************************
           ___________                                                  
