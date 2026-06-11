@@ -7,7 +7,7 @@ One wrong step, and it's **Game Over**! ☠️
 ## 🎮 Web Preview
 You don't need to install Python to play the preview! We built a web-based terminal simulator so you can test it directly in your browser.
 
-**[▶️ Click here to play the Web Preview](https://nathanpw12.github.io/treasure-island/)**
+**[▶️ Click here to play the Web Preview]([https://nathanpw12.github.io/treasure-island/](https://nathanpw12.github.io/treasure-island.github.io/))**
 
 > **Note:** The core game logic and structural development were entirely written by me in **Python** (`main.py`). The playable web version linked above is just a JavaScript/HTML port translated by Gemini AI, created solely to allow easy browser demonstration via GitHub Pages without the need for complex backend setups.
 
