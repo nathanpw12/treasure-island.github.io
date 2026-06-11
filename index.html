@@ -7,7 +7,7 @@
     <style>
         html {
             background-color: #000000;
-            scroll-behavior: smooth; /* A animação suave de rolagem fica aqui agora */
+            scroll-behavior: smooth; 
         }
 
         body {
@@ -16,7 +16,6 @@
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
-            /* A MÁGICA DO SCROLL ESTÁ AQUI: min-height em vez de height */
             min-height: 100vh; 
         }
 
@@ -32,7 +31,7 @@
             display: flex;
             align-items: center;
             margin-top: 10px;
-            padding-bottom: 50px; /* Respiro no fundo da tela */
+            padding-bottom: 50px; 
         }
 
         .prompt-symbol {
@@ -47,6 +46,18 @@
             font-size: 16px;
             outline: none;
             width: 100%;
+        }
+
+        /* O link verde claro do final do jogo */
+        .troll-link {
+            color: #90ee90; /* Verde claro */
+            text-decoration: underline;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .troll-link:hover {
+            color: #ffffff; /* Fica branco quando passa o mouse */
         }
 
         #raw-arts { display: none; }
@@ -124,7 +135,43 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
         const cmd = document.getElementById('cmd');
         const inputBox = document.getElementById('inputBox');
         
-        let gameState = 1;
+        // Estado 0 = Escolha de idioma
+        let gameState = 0; 
+        let lang = 'en'; // Padrão
+
+        // Dicionário de Idiomas
+        const dict = {
+            en: {
+                welcome: "     ♛ Welcome to Treasure Island ♛\n",
+                mission: " ◆ Your mission is to find the treasure ◆\n",
+                q1: "【 You're on the road, do you want to go 】\n            ▶ Left or Right? ◀",
+                q2: "【 You've found a river, do you want to 】\n            ▶ Wait or Swim? ◀",
+                waitMsg: "\n🚪 While waiting, you notice colorful doors in the distance 🚪\n",
+                q3: "【 You approach and see 3 doors, which door do you want to open 】\n            ▶ Red, Blue or Yellow? ◀",
+                deathHole: "\n        ☠︎︎ You fell into a hole ☠︎︎\n             ✖ Game Over ✖ ",
+                deathTrout: "\n        ☠︎︎ You were attacked by trout ☠︎︎\n              ✖ Game Over ✖ ",
+                deathFire: "\n        ☠︎︎ You were burned by fire ☠︎︎\n               ✖ Game Over ✖ ",
+                deathBeasts: "\n        ☠︎︎ You were devoured by beasts ☠︎\n               ✖ Game Over ✖ ",
+                invalid: "\n        ⚠ Invalid input ⚠︎\n             ✖ Game Over ✖ ",
+                refresh: "\n       [ ↻ Refresh the page to play again ↻ ]\n",
+                troll: "\n       <a href='https://youtu.be/dQw4w9WgXcQ?si=DMcrPv5HbRzOA5pu' target='_blank' class='troll-link'>[ NÃO CLIQUE AQUI ]</a>\n"
+            },
+            pt: {
+                welcome: "     ♛ Bem-vindo à Ilha do Tesouro ♛\n",
+                mission: " ◆ Sua missão é encontrar o tesouro ◆\n",
+                q1: "【 Você está em uma estrada, para onde deseja ir 】\n            ▶ Esquerda ou Direita? ◀",
+                q2: "【 Você encontrou um rio, o que deseja fazer 】\n            ▶ Esperar ou Nadar? ◀",
+                waitMsg: "\n🚪 Enquanto espera, você nota portas coloridas à distância 🚪\n",
+                q3: "【 Você se aproxima e vê 3 portas, qual delas quer abrir 】\n            ▶ Vermelha, Azul ou Amarela? ◀",
+                deathHole: "\n        ☠︎︎ Você caiu em um buraco escondido ☠︎︎\n               ✖ Fim de Jogo ✖ ",
+                deathTrout: "\n        ☠︎︎ Você foi atacado por trutas selvagens ☠︎︎\n                 ✖ Fim de Jogo ✖ ",
+                deathFire: "\n        ☠︎︎ Você foi queimado pelo fogo ☠︎︎\n               ✖ Fim de Jogo ✖ ",
+                deathBeasts: "\n        ☠︎︎ Você foi devorado por feras ☠︎\n               ✖ Fim de Jogo ✖ ",
+                invalid: "\n        ⚠ Comando inválido ⚠︎\n             ✖ Fim de Jogo ✖ ",
+                refresh: "\n       [ ↻ Atualize a página para jogar novamente ↻ ]\n",
+                troll: "\n       <a href='https://youtu.be/dQw4w9WgXcQ?si=DMcrPv5HbRzOA5pu' target='_blank' class='troll-link'>[ NÃO CLIQUE AQUI ]</a>\n"
+            }
+        };
 
         function printLine(text) {
             terminal.innerHTML += text + "\n";
@@ -133,63 +180,90 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
             }, 50);
         }
 
-        // --- NOVA FUNÇÃO PARA FIM DE JOGO / INPUT INVÁLIDO ---
         function gameOver(message) {
             printLine(message);
-            printLine("\n       [ ↻ Refresh the page to play again ↻ ]\n");
-            inputBox.style.display = 'none'; // Esconde a caixa de texto
+            printLine(dict[lang].refresh);
+            inputBox.style.display = 'none';
         }
 
-        printLine(document.getElementById('art-ship').textContent);
-        printLine("     ♛ Welcome to Treasure Island ♛\n");
-        printLine(" ◆ Your mission is to find the treasure ◆\n");
-        printLine("【 You're on the road, do you want to go 】\n            ▶ Left or Right? ◀");
+        // Inicia a pergunta do idioma
+        printLine("【 Select your language / Escolha seu idioma 】\n                ▶ EN or PT? ◀");
 
         cmd.addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 let answer = cmd.value.trim().toLowerCase().replace(/\s/g, "");
-                printLine("↳ " + cmd.value + "\n"); 
-                cmd.value = ""; 
                 
+                // Só imprime o que o cara digitou se não for o estágio de escolher idioma
+                if (gameState !== 0) {
+                    printLine("↳ " + cmd.value + "\n"); 
+                }
+                
+                cmd.value = ""; 
                 processInput(answer);
             }
         });
 
         function processInput(answer) {
-            if (gameState === 1) {
-                if (answer === 'right') {
-                    printLine("【 You've found a river, do you want to 】\n            ▶ Wait or Swim? ◀");
-                    gameState = 2;
-                } else if (answer === 'left') {
-                    gameOver("\n        ☠︎︎ You fell into a hole ☠︎︎\n             ✖ Game Over ✖ ");
+            // ESTADO 0: Escolher Idioma
+            if (gameState === 0) {
+                if (answer === 'pt' || answer === 'portugues' || answer === 'português' || answer === 'br') {
+                    lang = 'pt';
+                    startGame();
+                } else if (answer === 'en' || answer === 'english' || answer === 'ingles' || answer === 'inglês') {
+                    lang = 'en';
+                    startGame();
                 } else {
-                    gameOver("\n        ⚠ Invalid input ⚠︎\n             ✖ Game Over ✖ ");
+                    printLine("⚠ Invalid / Inválido. Type 'EN' or 'PT'.");
                 }
             } 
-            else if (gameState === 2) {
-                if (answer === 'wait') {
-                    printLine("\n🚪 While waiting, you notice colorful doors in the distance 🚪\n");
-                    printLine("【 You approach and see 3 doors, which door do you want to open 】\n            ▶ Red, Blue or Yellow? ◀");
-                    gameState = 3;
-                } else if (answer === 'swim') {
-                    gameOver("\n        ☠︎︎ You were attacked by trout ☠︎︎\n              ✖ Game Over ✖ ");
+            // ESTADO 1: Caminho
+            else if (gameState === 1) {
+                if ((lang === 'en' && answer === 'right') || (lang === 'pt' && answer === 'direita')) {
+                    printLine(dict[lang].q2);
+                    gameState = 2;
+                } else if ((lang === 'en' && answer === 'left') || (lang === 'pt' && answer === 'esquerda')) {
+                    gameOver(dict[lang].deathHole);
                 } else {
-                    gameOver("\n        ⚠ Invalid input ⚠︎\n             ✖ Game Over ✖ ");
+                    gameOver(dict[lang].invalid);
+                }
+            } 
+            // ESTADO 2: Rio
+            else if (gameState === 2) {
+                if ((lang === 'en' && answer === 'wait') || (lang === 'pt' && answer === 'esperar')) {
+                    printLine(dict[lang].waitMsg);
+                    printLine(dict[lang].q3);
+                    gameState = 3;
+                } else if ((lang === 'en' && answer === 'swim') || (lang === 'pt' && answer === 'nadar')) {
+                    gameOver(dict[lang].deathTrout);
+                } else {
+                    gameOver(dict[lang].invalid);
                 }
             }
+            // ESTADO 3: Portas
             else if (gameState === 3) {
-                if (answer === 'red') {
-                    gameOver("\n        ☠︎︎ You were burned by fire ☠︎︎\n               ✖ Game Over ✖ ");
-                } else if (answer === 'blue') {
-                    gameOver("\n        ☠︎︎ You were devoured by beasts ☠︎\n               ✖ Game Over ✖ ");
-                } else if (answer === 'yellow') {
+                if ((lang === 'en' && answer === 'red') || (lang === 'pt' && answer === 'vermelha')) {
+                    gameOver(dict[lang].deathFire);
+                } else if ((lang === 'en' && answer === 'blue') || (lang === 'pt' && answer === 'azul')) {
+                    gameOver(dict[lang].deathBeasts);
+                } else if ((lang === 'en' && answer === 'yellow') || (lang === 'pt' && answer === 'amarela')) {
+                    // O jogador VENCEU e vai cair no Rickroll kkkkk
                     printLine(document.getElementById('art-treasure').textContent);
-                    printLine("\n       [ ↻ Refresh the page to play again ↻ ]\n");
+                    printLine(dict[lang].troll); // Manda o link verde!
+                    printLine(dict[lang].refresh);
                     inputBox.style.display = 'none';
                 } else {
-                    gameOver("\n        ⚠ Invalid input ⚠︎\n             ✖ Game Over ✖ ");
+                    gameOver(dict[lang].invalid);
                 }
             }
+        }
+
+        function startGame() {
+            terminal.innerHTML = ""; // Limpa a tela de idioma
+            printLine(document.getElementById('art-ship').textContent);
+            printLine(dict[lang].welcome);
+            printLine(dict[lang].mission);
+            printLine(dict[lang].q1);
+            gameState = 1; // Avança para o jogo
         }
     </script>
 </body>
