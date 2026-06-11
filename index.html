@@ -176,7 +176,8 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
                 deathFire: "\n        ☠︎︎ You were burned by fire ☠︎︎\n               ✖ Game Over ✖ ",
                 deathBeasts: "\n        ☠︎︎ You were devoured by beasts ☠︎\n               ✖ Game Over ✖ ",
                 invalid: "\n        ⚠ Invalid input ⚠︎\n             ✖ Game Over ✖ ",
-                refresh: "\n       [ ↻ Refresh the page to play again ↻ ]\n",
+                tryAgain: "\n       [ ↻ Try again! ↻ ]\n",
+                playAgain: "\n       [ ↻ Refresh the page to play again ↻ ]\n",
                 troll: "\n       <a href='https://youtu.be/dQw4w9WgXcQ?si=DMcrPv5HbRzOA5pu' target='_blank' class='troll-link'>[ DO NOT CLICK HERE ]</a>\n"
             },
             pt: {
@@ -191,7 +192,8 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
                 deathFire: "\n        ☠︎︎ Você foi queimado pelo fogo ☠︎︎\n               ✖ Fim de Jogo ✖ ",
                 deathBeasts: "\n        ☠︎︎ Você foi devorado por feras ☠︎\n               ✖ Fim de Jogo ✖ ",
                 invalid: "\n        ⚠ Comando inválido ⚠︎\n             ✖ Fim de Jogo ✖ ",
-                refresh: "\n       [ ↻ Atualize a página para jogar novamente ↻ ]\n",
+                tryAgain: "\n       [ ↻ Tente novamente! ↻ ]\n",
+                playAgain: "\n       [ ↻ Atualize a página para jogar novamente ↻ ]\n",
                 troll: "\n       <a href='https://youtu.be/dQw4w9WgXcQ?si=DMcrPv5HbRzOA5pu' target='_blank' class='troll-link'>[ NÃO CLIQUE AQUI ]</a>\n"
             }
         };
@@ -203,10 +205,17 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
             }, 50);
         }
 
-        function gameOver(message) {
+        // Nova função que permite o jogador continuar de onde parou
+        function retryChoice(message) {
             printLine(message);
-            printLine(dict[lang].refresh);
-            inputBox.style.display = 'none';
+            printLine(dict[lang].tryAgain);
+            
+            // Re-imprime a pergunta atual para o jogador não se perder
+            if (gameState === 1) printLine(dict[lang].q1);
+            else if (gameState === 2) printLine(dict[lang].q2);
+            else if (gameState === 3) printLine(dict[lang].q3);
+            
+            // A caixa de input continua visível e o gameState não zera!
         }
 
         printLine("【 Select your language / Escolha seu idioma 】\n                ▶ EN or PT-BR? ◀");
@@ -241,9 +250,9 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
                     printLine(dict[lang].q2);
                     gameState = 2;
                 } else if ((lang === 'en' && answer === 'left') || (lang === 'pt' && answer === 'esquerda')) {
-                    gameOver(dict[lang].deathHole);
+                    retryChoice(dict[lang].deathHole);
                 } else {
-                    gameOver(dict[lang].invalid);
+                    retryChoice(dict[lang].invalid);
                 }
             } 
             else if (gameState === 2) {
@@ -252,24 +261,23 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
                     printLine(dict[lang].q3);
                     gameState = 3;
                 } else if ((lang === 'en' && answer === 'swim') || (lang === 'pt' && answer === 'nadar')) {
-                    gameOver(dict[lang].deathTrout);
+                    retryChoice(dict[lang].deathTrout);
                 } else {
-                    gameOver(dict[lang].invalid);
+                    retryChoice(dict[lang].invalid);
                 }
             }
             else if (gameState === 3) {
                 if ((lang === 'en' && answer === 'red') || (lang === 'pt' && answer === 'vermelha')) {
-                    gameOver(dict[lang].deathFire);
+                    retryChoice(dict[lang].deathFire);
                 } else if ((lang === 'en' && answer === 'blue') || (lang === 'pt' && answer === 'azul')) {
-                    gameOver(dict[lang].deathBeasts);
+                    retryChoice(dict[lang].deathBeasts);
                 } else if ((lang === 'en' && answer === 'yellow') || (lang === 'pt' && answer === 'amarela')) {
-                    // Puxa a arte do baú baseada no idioma escolhido!
                     printLine(document.getElementById('art-treasure-' + lang).textContent);
                     printLine(dict[lang].troll); 
-                    printLine(dict[lang].refresh);
-                    inputBox.style.display = 'none';
+                    printLine(dict[lang].playAgain);
+                    inputBox.style.display = 'none'; // Some APENAS quando o jogador vence
                 } else {
-                    gameOver(dict[lang].invalid);
+                    retryChoice(dict[lang].invalid);
                 }
             }
         }
