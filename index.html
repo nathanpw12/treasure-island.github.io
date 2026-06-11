@@ -4,42 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Treasure Island</title>
-    
-    <script src="https://cdn.jsdelivr.net/gh/gzuidhof/coi-serviceworker@master/coi-serviceworker.min.js"></script>
-
-    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
-    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
-
     <style>
         body, html {
             background-color: #000000;
             color: #00ff00;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            padding: 0;
-            width: 100vw;
+            padding: 20px;
+            box-sizing: border-box;
             height: 100vh;
-            overflow: hidden;
+            overflow-y: auto;
         }
 
-        mpy-terminal, py-terminal, [terminal] {
-            width: 100vw !important;
-            height: 100vh !important;
-            max-width: none !important;
-            max-height: none !important;
-            border: none !important;
-            border-radius: 0 !important;
-            padding: 20px !important;
-            box-sizing: border-box !important;
-            font-size: 16px !important;
-            background-color: #000000 !important;
+        #terminal {
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 16px;
+            line-height: 1.2;
+            white-space: pre-wrap; /* Mantém os espaços das artes ASCII */
         }
+
+        /* Estilo da linha de digitação */
+        .input-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .prompt-symbol {
+            margin-right: 8px;
+        }
+
+        input {
+            background-color: transparent;
+            border: none;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            outline: none;
+            width: 100%;
+        }
+
+        /* Esconde os blocos de texto bruto usados para guardar as artes */
+        #raw-arts { display: none; }
     </style>
 </head>
-<body>
+<body onclick="document.getElementById('cmd').focus();">
 
-    <script type="py" terminal worker>
-print(r'''
+    <div id="raw-arts">
+<pre id="art-ship">
 *******************************************************************************
           ___________                                                  
           \__    ___/______   ____ _____    ________ _________   ____  
@@ -68,30 +81,9 @@ ____/______/______/______/__"=._o--._   ;o|o;     _._;o;____/______/______/____
 ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
 /______/______/______/______/______/______/______/______/______/______/_____ /
 *******************************************************************************
-''')
-print("     ♛ Welcome to Treasure Island ♛\n")
-print(" ◆ Your mission is to find the treasure ◆\n")
-
-position1 = input('''【 You're on the road, do you want to go 】 \n            ▶ Left or Right? ◀ \n↳ ''').lower().replace(
-    " ", "")
-
-if position1 == 'right':
-
-    position2 = input(
-        '''【 You've found a river, do you want to 】 \n            ▶ Wait or Swim? ◀ \n↳ ''').lower().replace(" ", "")
-
-    if position2 == 'wait':
-        print('\n🚪 While waiting, you notice colorful doors in the distance 🚪\n')
-        position3 = input(
-            '【 You approach and see 3 doors, which door do you want to open 】 \n            ▶ Red, Blue or Yellow? ◀ \n↳ ').lower().replace(
-            " ", "")
-
-        if position3 == 'red':
-            print('''\n        ☠︎︎ You were burned by fire ☠︎︎\n               ✖ Game Over ✖ ''')
-        elif position3 == 'blue':
-            print('''\n        ☠︎︎ You were devoured by beasts ☠︎\n               ✖ Game Over ✖ ''')
-        elif position3 == 'yellow':
-            print(r'''⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+</pre>
+<pre id="art-treasure">
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ******************************************⠀⠀⠀⠀⠀⠀
 
@@ -115,20 +107,87 @@ if position1 == 'right':
 ⠀⠀
          ❤ 𝚃𝙷𝙰𝙽𝙺𝚂 𝙵𝙾𝚁 𝙿𝙻𝙰𝚈𝙸𝙽𝙶! ❤ 
           〘 𝗴𝗶𝘁𝗵𝘂𝗯 @𝗻𝗮𝘁𝗵𝗮𝗻𝗽𝘄𝟭𝟮 〙
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ 
- ''')
-        else:
-            print('''⚠ Invalid input, please try again ⚠︎\n''')
+</pre>
+    </div>
 
-    elif position2 == 'swim':
-        print('''\n        ☠︎︎ You were attacked by trout ☠︎︎\n              ✖ Game Over ✖ ''')
-    else:
-        print('''⚠ Invalid input, please try again ⚠︎\n''')
+    <div id="terminal"></div>
+    <div class="input-container" id="inputBox">
+        <span class="prompt-symbol">↳</span>
+        <input type="text" id="cmd" autofocus autocomplete="off">
+    </div>
 
-elif position1 == 'left':
-    print('''\n        ☠︎︎ You fell into a hole ☠︎︎\n             ✖ Game Over ✖ ''')
-else:
-    print('''⚠ Invalid input, please try again ⚠︎\n''')
+    <script>
+        const terminal = document.getElementById('terminal');
+        const cmd = document.getElementById('cmd');
+        const inputBox = document.getElementById('inputBox');
+        
+        let gameState = 1;
+
+        function printLine(text) {
+            terminal.innerHTML += text + "\n";
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        // Inicialização do jogo
+        printLine(document.getElementById('art-ship').textContent);
+        printLine("     ♛ Welcome to Treasure Island ♛\n");
+        printLine(" ◆ Your mission is to find the treasure ◆\n");
+        printLine("【 You're on the road, do you want to go 】\n            ▶ Left or Right? ◀");
+
+        // Captura o "Enter"
+        cmd.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                let answer = cmd.value.trim().toLowerCase().replace(/\s/g, "");
+                printLine("↳ " + cmd.value + "\n"); // Imprime o que o usuário digitou
+                cmd.value = ""; // Limpa a caixa
+                
+                processInput(answer);
+            }
+        });
+
+        function processInput(answer) {
+            if (gameState === 1) { // Left or Right
+                if (answer === 'right') {
+                    printLine("【 You've found a river, do you want to 】\n            ▶ Wait or Swim? ◀");
+                    gameState = 2;
+                } else if (answer === 'left') {
+                    printLine("\n        ☠︎︎ You fell into a hole ☠︎︎\n             ✖ Game Over ✖ \n");
+                    endGame();
+                } else {
+                    printLine("⚠ Invalid input, please try again ⚠︎");
+                }
+            } 
+            else if (gameState === 2) { // Wait or Swim
+                if (answer === 'wait') {
+                    printLine("\n🚪 While waiting, you notice colorful doors in the distance 🚪\n");
+                    printLine("【 You approach and see 3 doors, which door do you want to open 】\n            ▶ Red, Blue or Yellow? ◀");
+                    gameState = 3;
+                } else if (answer === 'swim') {
+                    printLine("\n        ☠︎︎ You were attacked by trout ☠︎︎\n              ✖ Game Over ✖ \n");
+                    endGame();
+                } else {
+                    printLine("⚠ Invalid input, please try again ⚠︎");
+                }
+            }
+            else if (gameState === 3) { // Red, Blue or Yellow
+                if (answer === 'red') {
+                    printLine("\n        ☠︎︎ You were burned by fire ☠︎︎\n               ✖ Game Over ✖ \n");
+                    endGame();
+                } else if (answer === 'blue') {
+                    printLine("\n        ☠︎︎ You were devoured by beasts ☠︎\n               ✖ Game Over ✖ \n");
+                    endGame();
+                } else if (answer === 'yellow') {
+                    printLine(document.getElementById('art-treasure').textContent);
+                    endGame();
+                } else {
+                    printLine("⚠ Invalid input, please try again ⚠︎");
+                }
+            }
+        }
+
+        function endGame() {
+            inputBox.style.display = 'none'; // Some com a caixa de digitação
+        }
     </script>
 </body>
 </html>
