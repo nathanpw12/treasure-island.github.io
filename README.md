@@ -7,7 +7,7 @@ One wrong step, and it's **Game Over**! ☠️
 ## 🎮 Play the Game
 You don't need to install Python to play! Thanks to **PyScript**, the game runs directly in your browser.
 
-**[▶️ Click here to play Treasure Island](https://nathanpw12.github.io/treasure-island/)**
+**[▶️ Click here to play Treasure Island](https://nathanpw12.github.io/treasure-island-nathanpw12/)**
 
 ## 🛠️ Features
 * **Interactive Storytelling:** Multiple paths and different endings based on your inputs.
