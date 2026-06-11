@@ -11,7 +11,7 @@ One wrong step, and it's **Game Over**! ☠️
 ## 🎮 Web Preview
 You don't need to install Python to play the preview! We built a web-based terminal simulator so you can test it directly in your browser.
 
-**[▶️ Click here to play the Web Preview](https://nathanpw12.github.io/treasure-island/)**
+**[▶️ Click here to play the Web Preview](https://nathanpw12.github.io/treasure-island.github.io/)**
 
 > **Note:** The core game logic and structural development were entirely written by me in **Python** (`main.py`). The playable web version linked above is just a JavaScript/HTML port translated by Gemini AI, created solely to allow easy browser demonstration via GitHub Pages without the need for complex backend setups.
 
@@ -56,7 +56,7 @@ Um passo em falso, e é **Fim de Jogo**! ☠️
 ## 🎮 Preview na Web
 Você não precisa instalar o Python para testar a prévia! Nós construímos um simulador de terminal web para que você possa testar direto no seu navegador.
 
-**[▶️ Clique aqui para jogar o Preview na Web](https://nathanpw12.github.io/treasure-island/)**
+**[▶️ Clique aqui para jogar o Preview na Web](https://nathanpw12.github.io/treasure-island.github.io/)**
 
 > **Nota:** A lógica principal do jogo e o desenvolvimento estrutural foram totalmente escritos por mim em **Python** (`main.py`). A versão jogável na web linkada acima é apenas uma adaptação em JavaScript/HTML traduzida pela IA Gemini, criada exclusivamente para permitir uma demonstração fácil no navegador via GitHub Pages, sem a necessidade de configurações complexas de servidor.
 
