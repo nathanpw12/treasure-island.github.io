@@ -7,28 +7,32 @@
     <style>
         body, html {
             background-color: #000000;
-            color: #00ff00;
+            color: #ffffff;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
             height: 100vh;
+            /* Permite rolagem no body para o scrollTo funcionar */
             overflow-y: auto;
+            scroll-behavior: smooth; /* Adiciona uma animação suave de rolagem */
         }
 
         #terminal {
             max-width: 900px;
-            margin: 0 auto;
             font-size: 16px;
             line-height: 1.2;
-            white-space: pre-wrap; /* Mantém os espaços das artes ASCII */
+            white-space: pre-wrap;
+            /* Garante que o terminal não corte o conteúdo */
+            padding-bottom: 50px; 
         }
 
-        /* Estilo da linha de digitação */
         .input-container {
             display: flex;
             align-items: center;
             margin-top: 10px;
+            /* Garante que a caixa de input não fique grudada no final */
+            padding-bottom: 20px;
         }
 
         .prompt-symbol {
@@ -38,14 +42,13 @@
         input {
             background-color: transparent;
             border: none;
-            color: #00ff00;
+            color: #ffffff;
             font-family: 'Courier New', Courier, monospace;
             font-size: 16px;
             outline: none;
             width: 100%;
         }
 
-        /* Esconde os blocos de texto bruto usados para guardar as artes */
         #raw-arts { display: none; }
     </style>
 </head>
@@ -106,7 +109,7 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
 ******************************************
 ⠀⠀
          ❤ 𝚃𝙷𝙰𝙽𝙺𝚂 𝙵𝙾𝚁 𝙿𝙻𝙰𝚈𝙸𝙽𝙶! ❤ 
-          〘 𝗴𝗶𝘁𝗵𝘂𝗯 @𝗻𝗮𝘁𝗵𝗮𝗻𝗽𝘄𝟭𝟮 〙
+          〘 𝗴𝗶𝚝𝗵𝘂𝗯 @𝗻𝗮𝚝𝚑𝗮𝗻𝚙𝚠𝟷𝟸 〙
 </pre>
     </div>
 
@@ -123,30 +126,36 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
         
         let gameState = 1;
 
+        // --- A MÁGICA ESTÁ AQUI ---
         function printLine(text) {
             terminal.innerHTML += text + "\n";
-            window.scrollTo(0, document.body.scrollHeight);
+            
+            // Pequeno atraso (50ms) para garantir que o navegador renderizou
+            // todo o texto novo antes de calcular a nova altura da página.
+            setTimeout(function() {
+                // Rola a janela (window) até o final do corpo (document.body)
+                window.scrollTo(0, document.body.scrollHeight);
+            }, 50);
         }
+        // -------------------------
 
-        // Inicialização do jogo
         printLine(document.getElementById('art-ship').textContent);
         printLine("     ♛ Welcome to Treasure Island ♛\n");
         printLine(" ◆ Your mission is to find the treasure ◆\n");
         printLine("【 You're on the road, do you want to go 】\n            ▶ Left or Right? ◀");
 
-        // Captura o "Enter"
         cmd.addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 let answer = cmd.value.trim().toLowerCase().replace(/\s/g, "");
-                printLine("↳ " + cmd.value + "\n"); // Imprime o que o usuário digitou
-                cmd.value = ""; // Limpa a caixa
+                printLine("↳ " + cmd.value + "\n"); 
+                cmd.value = ""; 
                 
                 processInput(answer);
             }
         });
 
         function processInput(answer) {
-            if (gameState === 1) { // Left or Right
+            if (gameState === 1) {
                 if (answer === 'right') {
                     printLine("【 You've found a river, do you want to 】\n            ▶ Wait or Swim? ◀");
                     gameState = 2;
@@ -157,7 +166,7 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
                     printLine("⚠ Invalid input, please try again ⚠︎");
                 }
             } 
-            else if (gameState === 2) { // Wait or Swim
+            else if (gameState === 2) {
                 if (answer === 'wait') {
                     printLine("\n🚪 While waiting, you notice colorful doors in the distance 🚪\n");
                     printLine("【 You approach and see 3 doors, which door do you want to open 】\n            ▶ Red, Blue or Yellow? ◀");
@@ -169,7 +178,7 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
                     printLine("⚠ Invalid input, please try again ⚠︎");
                 }
             }
-            else if (gameState === 3) { // Red, Blue or Yellow
+            else if (gameState === 3) {
                 if (answer === 'red') {
                     printLine("\n        ☠︎︎ You were burned by fire ☠︎︎\n               ✖ Game Over ✖ \n");
                     endGame();
@@ -186,7 +195,7 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
         }
 
         function endGame() {
-            inputBox.style.display = 'none'; // Some com a caixa de digitação
+            inputBox.style.display = 'none';
         }
     </script>
 </body>
