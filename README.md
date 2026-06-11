@@ -1,6 +1,6 @@
-# 🏴‍☠️ Treasure Island
-
 > 🇧🇷 **[Clique aqui para ler a versão em Português](#-ilha-do-tesouro--versão-em-português)**
+> 
+# 🏴‍☠️ Treasure Island
 
 > 🎓 **Course Project:** This game was built as the final challenge for **Day 3** of the *"100 Days of Code™: The Complete Python Pro Bootcamp"* created by Angela Yu.
 
