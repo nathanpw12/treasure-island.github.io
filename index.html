@@ -23,10 +23,7 @@
             max-width: 900px;
             font-size: 16px;
             line-height: 1.2;
-            /* Troquei de pre-wrap para pre, assim ele NUNCA quebra a arte ASCII */
-            white-space: pre;
-            /* Adiciona rolagem lateral no celular caso a tela seja muito pequena */
-            overflow-x: auto;
+            white-space: pre-wrap;
             padding-bottom: 20px; 
         }
 
@@ -63,16 +60,6 @@
         }
 
         #raw-arts { display: none; }
-
-        /* RESPONSIVIDADE: Adapta o tamanho para telas de celular */
-        @media (max-width: 768px) {
-            #terminal {
-                font-size: 10px; /* Diminui a fonte para a arte caber na tela */
-            }
-            input {
-                font-size: 16px; /* Mantém o input grande para o celular não dar zoom automático ao digitar */
-            }
-        }
     </style>
 </head>
 <body onclick="document.getElementById('cmd').focus();">
@@ -180,10 +167,10 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
             en: {
                 welcome: "     ♛ Welcome to Treasure Island ♛\n",
                 mission: " ◆ Your mission is to find the treasure ◆\n",
-                q1: "【 You're on the road, do you want to go 】\n            ▶ Left or Right? ◀\n      [ Type your choice below ]",
-                q2: "【 You've found a river, do you want to 】\n            ▶ Wait or Swim? ◀\n      [ Type your choice below ]",
+                q1: "【 You're on the road, do you want to go 】\n            ▶ Left or Right? ◀",
+                q2: "【 You've found a river, do you want to 】\n            ▶ Wait or Swim? ◀",
                 waitMsg: "\n🚪 While waiting, you notice colorful doors in the distance 🚪\n",
-                q3: "【 You approach and see 3 doors, which door do you want to open 】\n            ▶ Red, Blue or Yellow? ◀\n      [ Type your choice below ]",
+                q3: "【 You approach and see 3 doors, which door do you want to open 】\n            ▶ Red, Blue or Yellow? ◀",
                 deathHole: "\n        ☠︎︎ You fell into a hole ☠︎︎\n             ✖ Game Over ✖ ",
                 deathTrout: "\n        ☠︎︎ You were attacked by trout ☠︎︎\n              ✖ Game Over ✖ ",
                 deathFire: "\n        ☠︎︎ You were burned by fire ☠︎︎\n               ✖ Game Over ✖ ",
@@ -196,10 +183,10 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
             pt: {
                 welcome: "     ♛ Bem-vindo à Ilha do Tesouro ♛\n",
                 mission: " ◆ Sua missão é encontrar o tesouro ◆\n",
-                q1: "【 Você está em uma estrada, para onde deseja ir 】\n            ▶ Esquerda ou Direita? ◀\n      [ Digite sua escolha abaixo ]",
-                q2: "【 Você encontrou um rio, o que deseja fazer 】\n            ▶ Esperar ou Nadar? ◀\n      [ Digite sua escolha abaixo ]",
+                q1: "【 Você está em uma estrada, para onde deseja ir 】\n            ▶ Esquerda ou Direita? ◀",
+                q2: "【 Você encontrou um rio, o que deseja fazer 】\n            ▶ Esperar ou Nadar? ◀",
                 waitMsg: "\n🚪 Enquanto espera, você nota portas coloridas à distância 🚪\n",
-                q3: "【 Você se aproxima e vê 3 portas, qual delas quer abrir 】\n            ▶ Vermelha, Azul ou Amarela? ◀\n      [ Digite sua escolha abaixo ]",
+                q3: "【 Você se aproxima e vê 3 portas, qual delas quer abrir 】\n            ▶ Vermelha, Azul ou Amarela? ◀",
                 deathHole: "\n        ☠︎︎ Você caiu em um buraco escondido ☠︎︎\n               ✖ Fim de Jogo ✖ ",
                 deathTrout: "\n        ☠︎︎ Você foi atacado por trutas selvagens ☠︎︎\n                 ✖ Fim de Jogo ✖ ",
                 deathFire: "\n        ☠︎︎ Você foi queimado pelo fogo ☠︎︎\n               ✖ Fim de Jogo ✖ ",
@@ -215,3 +202,94 @@ ____/______/______/______/______/_____"=.o|o_.--""___/______/______/______/____
             terminal.innerHTML += text + "\n";
             setTimeout(function() {
                 window.scrollTo(0, document.body.scrollHeight);
+            }, 50);
+        }
+
+        // Nova função que permite o jogador continuar de onde parou
+        function retryChoice(message) {
+            printLine(message);
+            printLine(dict[lang].tryAgain);
+            
+            // Re-imprime a pergunta atual para o jogador não se perder
+            if (gameState === 1) printLine(dict[lang].q1);
+            else if (gameState === 2) printLine(dict[lang].q2);
+            else if (gameState === 3) printLine(dict[lang].q3);
+            
+            // A caixa de input continua visível e o gameState não zera!
+        }
+
+        printLine("【 Select your language / Escolha seu idioma 】\n                ▶ EN or PT-BR? ◀");
+
+        cmd.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                let answer = cmd.value.trim().toLowerCase().replace(/\s/g, "");
+                
+                if (gameState !== 0) {
+                    printLine("↳ " + cmd.value + "\n"); 
+                }
+                
+                cmd.value = ""; 
+                processInput(answer);
+            }
+        });
+
+        function processInput(answer) {
+            if (gameState === 0) {
+                if (answer === 'pt' || answer === 'pt-br' || answer === 'ptbr' || answer === 'portugues' || answer === 'português' || answer === 'br') {
+                    lang = 'pt';
+                    startGame();
+                } else if (answer === 'en' || answer === 'english' || answer === 'ingles' || answer === 'inglês') {
+                    lang = 'en';
+                    startGame();
+                } else {
+                    printLine("⚠ Invalid / Inválido. Type 'EN' or 'PT-BR'.");
+                }
+            } 
+            else if (gameState === 1) {
+                if ((lang === 'en' && answer === 'right') || (lang === 'pt' && answer === 'direita')) {
+                    printLine(dict[lang].q2);
+                    gameState = 2;
+                } else if ((lang === 'en' && answer === 'left') || (lang === 'pt' && answer === 'esquerda')) {
+                    retryChoice(dict[lang].deathHole);
+                } else {
+                    retryChoice(dict[lang].invalid);
+                }
+            } 
+            else if (gameState === 2) {
+                if ((lang === 'en' && answer === 'wait') || (lang === 'pt' && answer === 'esperar')) {
+                    printLine(dict[lang].waitMsg);
+                    printLine(dict[lang].q3);
+                    gameState = 3;
+                } else if ((lang === 'en' && answer === 'swim') || (lang === 'pt' && answer === 'nadar')) {
+                    retryChoice(dict[lang].deathTrout);
+                } else {
+                    retryChoice(dict[lang].invalid);
+                }
+            }
+            else if (gameState === 3) {
+                if ((lang === 'en' && answer === 'red') || (lang === 'pt' && answer === 'vermelha')) {
+                    retryChoice(dict[lang].deathFire);
+                } else if ((lang === 'en' && answer === 'blue') || (lang === 'pt' && answer === 'azul')) {
+                    retryChoice(dict[lang].deathBeasts);
+                } else if ((lang === 'en' && answer === 'yellow') || (lang === 'pt' && answer === 'amarela')) {
+                    printLine(document.getElementById('art-treasure-' + lang).textContent);
+                    printLine(dict[lang].troll); 
+                    printLine(dict[lang].playAgain);
+                    inputBox.style.display = 'none'; // Some APENAS quando o jogador vence
+                } else {
+                    retryChoice(dict[lang].invalid);
+                }
+            }
+        }
+
+        function startGame() {
+            terminal.innerHTML = ""; 
+            printLine(document.getElementById('art-ship').textContent);
+            printLine(dict[lang].welcome);
+            printLine(dict[lang].mission);
+            printLine(dict[lang].q1);
+            gameState = 1; 
+        }
+    </script>
+</body>
+</html>
